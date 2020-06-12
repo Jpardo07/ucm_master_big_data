@@ -1,0 +1,13 @@
+name: ucm_master_big_data
+title: ucm_master_big_data
+username:
+account: concejero
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2417563
+bundleId: 3235570
+url: https://concejero.shinyapps.io/ucm_master_big_data/
+when: 1591437113.9754
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: 02_basic_graphs_with_r.r|03_ggplot2_graphics.r|05_mapas_paro.r|datos_4510_vehiculos_2016.rda|ejemplo_mapas_con_nombre_pais.r|ESP_adm0.rds|ESP_adm1.rds|ESP_adm2.rds|ESP_adm3.rds|ESP_adm4.rds|gadm36_ESP_0_sp.rds|gadm36_ESP_1_sp.rds|gadm36_ESP_2_sp.rds|gadm36_ESP_3_sp.rds|gadm36_ESP_4_sp.rds|how_many_packages_published_CRAN.r|mtcars.rda|README.md|tasas_paro_andalucia.rda|visualizacion_edad_COVID19.r

@@ -44,12 +44,21 @@ p <- ggplot(data_para_plot,
 
 p + geom_col()
 
+p <- ggplot(data_para_plot,
+            aes(rango_edad, ingresos_uci))
+
+p + geom_col()
+
+
 p + geom_bar(stat = "identity")
 
 p + geom_bar(stat = "identity") + theme_classic()
 
 p + geom_bar(stat = "identity", fill="steelblue") + 
   theme_minimal() + coord_flip()
+
+p + geom_bar(stat = "identity", fill="steelblue") + 
+  theme_dark() + coord_flip()
 
 # Hagamos ahora gráficos con facetas por sexo
 
@@ -66,7 +75,7 @@ p + geom_col()
 
 p + geom_col(fill="steelblue") + 
   theme_minimal() + 
-  facet_grid(~ sexo)
+  facet_grid(sexo ~ .)
 
 p + geom_col(fill="steelblue") + 
   theme_minimal() + 
@@ -110,12 +119,13 @@ p <- ggplot(data_para_plot[data_para_plot$sexo != "ambos", ],
 p + geom_bar(position = "dodge",
              stat = "identity")
 
-p + geom_bar(position = "dodge", 
-             stat = "identity") + coord_flip()
+q <- p + geom_bar(position = "dodge", 
+             stat = "identity") + coord_flip() + 
+  scale_fill_manual(values = c("skyblue", "green"))
 
 def2 <- p + geom_bar(position = "dodge",
              stat = "identity") + coord_flip()
 
-def2 + ggtitle(paste(title, "\n", "por género"))
+q + ggtitle(paste(title, "\n", "por género"))
 
                

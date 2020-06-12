@@ -36,11 +36,11 @@ ggplot(mtcars,
   scale_color_gradient() +
   theme_bw()
 
-# Gráfico de dispersión con region hexadecimal
+# Gráfico de dispersión con region hexagonal
 
 ggplot(mtcars, 
        aes(tons, litperkm)) +
-  geom_hex() +
+  geom_hex(alpha = 0.5) +
   geom_smooth(method ="lm") +
   coord_cartesian() +
   scale_color_gradient() +
@@ -93,6 +93,7 @@ glotones
 p <- ggplot(mtcars, 
             aes(cyl, litperkm,
                 label = row.names(mtcars)))
+
 p + geom_boxplot() +
   geom_text(aes(label = row.names(mtcars)),
             hjust=0, 

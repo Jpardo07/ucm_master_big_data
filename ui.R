@@ -1,5 +1,5 @@
 #
-# Ejemplo de app shiny para master UNED Big Data
+# Ejemplo de app shiny para master UCM Big Data
 # Módulo visualización avanzada
 #
 # Ejemplo de ejercicio con datos COVID por edad
@@ -44,15 +44,22 @@ shinyUI(
                    tabPanel("Barplot",
                             sidebarPanel(
                               
-                              selectInput('y', 'Elige variable para eje Y', continuas, continuas[[4]]),
+                              selectInput(inputId = 'y', 
+                                          'Elige variable para eje Y', 
+                                          continuas, 
+                                          continuas[[4]]),
                             ),
                             
                             mainPanel(
-                              plotOutput('plot',
-                                         height=500)
+                              plotOutput(outputId = 'plot',
+                                         height = 900,
+                                         width = 600
+                                         )
                               
                             )
                    )
   
 ))
+
+
 
