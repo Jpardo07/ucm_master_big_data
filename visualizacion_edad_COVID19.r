@@ -1,7 +1,7 @@
 # Pedro Concejero pedro.concejerocerezo@gmail.com
 # 29 de abril de 2020
 
-# Script para visualizar muertes por COVID-19 por edad y sexo
+# Script para visualizar muertes por COVID-19 por edad y sexo 
 # Infinitas gracias al grandísimo trabajo de datadista para 
 # coordinar y compartir los datos de esta pandemia
 # https://datadista.com/

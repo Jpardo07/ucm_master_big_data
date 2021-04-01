@@ -1,21 +1,16 @@
+# Ejemplo de mapas básicos con ggplot2 
+# Intro. a choropleths para master UCM big data
 
-# Ejemplo super básico
+# asegúrate de cambiar tu directorio de trabajo (donde has descargado todo el repo.)
 
-install.packages("maps")
-library(maps)
+setwd("/home/pedro/Escritorio/UCM_master/ucm_master_big_data")
 
-map('italy')
-
-# Usando gadm
-# A "R SpatialPolygonsDataFrame" (.rds) file can be used in R. 
-# To use it, first load the sp package using library(sp) and then use readRDS("filename.rds") 
-# (obviously replacing "filename.rds" with the actual filename). 
-
-install.packages("sp")
+# si no tienes instalado el paquete "sp" instálalo
+#install.packages("sp")
 library(sp)
 library(lattice)
 library(ggplot2)
-
+library(RColorBrewer)
 
 # Forma básica de España
 espania <- readRDS(file = "ESP_adm0.rds")
@@ -40,10 +35,6 @@ plot(andalucia)
 # Con cambios en escalas de color a partir de taller de color de grupo R madrid:
 # https://github.com/pedroconcejero/taller-color/blob/master/taller_color_def_grupo_madrid.rmd
 
-
-# Pon tu directorio de trabajo
-setwd("/home/pedro/Escritorio/UCM_master/ucm_master_big_data")
-
 githubURL1 <- "https://github.com/pedroconcejero/taller-color/blob/master/tasas_paro_andalucia.rda?raw=true"
 
 load(url(githubURL1))
@@ -57,6 +48,16 @@ tasa.paro.and.provincial$gedad[tasa.paro.and.provincial$gedad == "De 35 a 54 a\x
 tasa.paro.and.provincial$gedad[tasa.paro.and.provincial$gedad == "Mayor de 55 a\xf1os"] <- "Mayor de 55 años"
 table(tasa.paro.and.provincial$gedad)
 
+tasa.paro.and.provincial$prov <- droplevels(tasa.paro.and.provincial$prov)
+levels(tasa.paro.and.provincial$prov)
+levels(tasa.paro.and.provincial$prov)[1] <- "Almería"
+levels(tasa.paro.and.provincial$prov)[2] <- "Cádiz"
+levels(tasa.paro.and.provincial$prov)[3] <- "Córdoba"
+levels(tasa.paro.and.provincial$prov)[6] <- "Jaén"
+levels(tasa.paro.and.provincial$prov)[7] <- "Málaga"
+levels(tasa.paro.and.provincial$prov)
+
+table(tasa.paro.and.provincial$prov)
 # la función fortify -de ggplot2- permite pasar el objeto andalucia
 # propio de la librería sp
 # a data.frame que ya puede utilizar ggplot2
@@ -185,4 +186,92 @@ ggplot(tasa.paro.and.provincial) +
   ggtitle("Tasa de paro\npor edad y estudios")
 
 
+# Mapa con tasa de paro con alguna mejora
+# - optimización de colores de líneas y fondo
+# - incremento de categorías
+# - uso de una escala divergente
+
+cols <- brewer.pal(8,"PiYG")
+
+ggplot(tasa.paro.and.provincial) + 
+  geom_map(aes(map_id = cod_prov, fill = intervalosfinos), 
+           map = and.data.frame, 
+           colour = "cadetblue1") + 
+  expand_limits(x = and.data.frame$long, 
+                y = and.data.frame$lat) + 
+  facet_grid(gedad ~ nforma3) + 
+  scale_fill_manual(values = rev(cols),  
+                    labels = c("<10", 
+                               "10-20", 
+                               "20-30", 
+                               "30-40",
+                               "40-50",
+                               "50-60",
+                               "60-70",
+                               "70-80")) + 
+  scale_x_continuous(breaks = NULL) + 
+  scale_y_continuous(breaks = NULL) + 
+  theme(axis.text.y = element_blank(), 
+        axis.text.x = element_blank(), 
+        plot.title = element_text(face = "bold", 
+                                  size = rel(1.4)), 
+        legend.text = element_text(size = rel(1.1)), 
+        strip.text = element_text(face = "bold", 
+                                  size = rel(1.1))) + 
+  labs(list(x = "", y = "", fill = "")) + 
+  ggtitle("Tasa de paro\npor edad y estudios")
+
+################
+# POR QUÉ ES IMPORTANTE CONSIDERAR LA CEGUERA AL COLOR
+# dichromat es una librería que incorpora funciones que cambian las distinciones de color azul-verde a aproximadamente los efectos de las dos formas más comunes de ceguera a color: protanopia y deuteranopia.
+# Un ejemplo de heatmap.
+
+library(dichromat)
+
+par(mfcol=c(1, 2))
+N <- 20
+pie(rep(1, N),
+    col = heat.colors(N))
+
+# Cómo lo vería una persona con deuteranopia:
+  
+pie(rep(1, N),
+    col = dichromat(heat.colors(N), type = "deutan"))
+
+# Y con protanopia
+
+pie(rep(1, N),
+    col = dichromat(heat.colors(N), type = "tritan"))
+
+
+# Veamos la simulación de nuestro último mapa para una persona con deuteranopia 
+# (y aprovechamos para variar el color de las líneas de separación):
+  
+ggplot(tasa.paro.and.provincial) + 
+  geom_map(aes(map_id = cod_prov, fill = intervalosfinos), 
+           map = and.data.frame, 
+           colour = "yellow") + 
+  expand_limits(x = and.data.frame$long, 
+                y = and.data.frame$lat) + 
+  facet_grid(gedad ~ nforma3) + 
+  scale_fill_manual(values = dichromat(rev(cols), type = "deutan"),  
+                    labels = c("<10", 
+                               "10-20", 
+                               "20-30", 
+                               "30-40",
+                               "40-50",
+                               "50-60",
+                               "60-70",
+                               "70-80")) + 
+  scale_x_continuous(breaks = NULL) + 
+  scale_y_continuous(breaks = NULL) + 
+  theme(axis.text.y = element_blank(), 
+        axis.text.x = element_blank(), 
+        plot.title = element_text(face = "bold", 
+                                  size = rel(1.4)), 
+        legend.text = element_text(size = rel(1.1)), 
+        strip.text = element_text(face = "bold", 
+                                  size = rel(1.1))) + 
+  labs(list(x = "", y = "", fill = "")) + 
+  ggtitle("Tasa de paro\npor edad y estudios")
 
