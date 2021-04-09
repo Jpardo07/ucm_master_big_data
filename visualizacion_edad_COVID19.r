@@ -9,7 +9,7 @@
 
 library(tidyverse)
 
-url <- "https://raw.githubusercontent.com/datadista/datasets/master/COVID%2019/nacional_covid19_rango_edad.csv"
+url <- "https://raw.githubusercontent.com/datadista/datasets/master/COVID%2019/old_series/nacional_covid19_rango_edad.csv"
 
 data <- read_csv(url)
 
