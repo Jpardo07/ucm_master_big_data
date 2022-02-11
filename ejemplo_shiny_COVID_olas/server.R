@@ -22,12 +22,12 @@ isciii <- read_csv("https://cnecovid.isciii.es/covid19/resources/casos_hosp_uci_
 
 fech_max <- max(isciii$fecha)
 
-#cond <- {isciii$fecha == fech_max & 
- # isciii$grupo_edad != "NC" &
-  # isciii$sexo != "NC" }
+cond <- {isciii$fecha < fech_max & 
+  isciii$grupo_edad != "NC" &
+  isciii$sexo != "NC" }
 
-cond <- {isciii$grupo_edad != "NC" &
- isciii$sexo != "NC" }
+# cond <- {isciii$grupo_edad != "NC" &
+#  isciii$sexo != "NC" }
 
 
 data_para_plot <- isciii[cond, ]
