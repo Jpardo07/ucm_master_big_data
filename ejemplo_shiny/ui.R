@@ -1,5 +1,5 @@
 #
-# Ejemplo de app shiny para master UNED Big Data
+# Ejemplo de app shiny para master UCM Big Data
 # Módulo visualización avanzada
 #
 # Ejemplo para ejercicio de fin de módulo
@@ -12,7 +12,7 @@ library(ggplot2)
 
 # Cargamos los datos desde el repositorio github del módulo 
 
-dataset <- get(load(url("https://github.com/pedroconcejero/master_UNED/blob/master/datos_4510_vehiculos_2016.rda?raw=true")))
+dataset <- get(load(url("https://github.com/pedroconcejero/ucm_master_big_data/blob/master/datos_4510_vehiculos_2016.rda?raw=true")))
 
 # distinguimos variables "a nivel de intervalo" ("continuas" para ggplot)
 nums <- sapply(dataset, is.numeric)
@@ -59,26 +59,34 @@ shinyUI(
                    tabPanel("Scatterplot consumo y más",
                             sidebarPanel(
                               
-                              selectInput('x', 'Elige variable para eje X', continuas, continuas[[1]]),
-                              selectInput('y', 'Elige variable para eje Y', continuas, continuas[[8]]),
-                              selectInput('color', 'Color', c('None', 'Tipo')),
+                              selectInput('x', 
+                                          'Elige variable para eje X', 
+                                          continuas, continuas[[1]]),
+                              selectInput('y', 
+                                          'Elige variable para eje Y', 
+                                          continuas, continuas[[8]]),
+                              selectInput('color', 
+                                          'Pon el color que quieras', 
+                                          c('None', 'Tipo')),
                               
                               checkboxInput('lm', 'Línea de Regresión'),
                               checkboxInput('smooth', 'Suavizado LOESS'),
  
-                              selectInput('facet_row', 'Elige variable para facetas por filas', c(None='.', categoricas))
+                              selectInput('facet_row', 
+                                          'Elige variable para facetas por filas', 
+                                          c(None='.', 'Tipo'))
                             ),
                             
                             mainPanel(
                               plotOutput('plot',
-                                         height=500)
+                                         height=1000)
                               
-                            )
+                            
                    ),
                    tabPanel("Trabajo adicional",
                             h1("¿Qué otros gráficos podéis plantear con estos datos?", align = "center"),
                             p("Podemos plantearnos en esta pestaña boxplot, mosaico, gráficos de balón...")
                    )
-  
+                   )
 ))
 
